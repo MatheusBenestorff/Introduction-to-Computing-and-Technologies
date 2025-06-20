@@ -1,40 +1,28 @@
 import pandas as pd
+from datetime import datetime
 
-def aumenta_caixa(fruta, quantidade, usuario):
+def atualiza_caixa(fruta, quantidade, usuario, codigoCaixa):
     dadosEstoque = pd.read_csv("Estoque.csv")
     dadosCaixa = pd.read_csv("Caixa.csv")
 
     lista_frutas = list(dadosEstoque['Fruta'])
     lista_quantidades = list(dadosEstoque['Quantidade'])
     lista_preco = list(dadosEstoque['PVenda'])
-
-
-
-
-
-    dados = pd.read_csv("Estoque.csv")
-
-    lista_frutas = list(dados['Fruta'])
-    lista_quantidades = list(dados['Quantidade'])
-
-
-    if (fruta not in lista_frutas):
-        print("Essa fruta não existe no estoque.")
-        return 1
+    lista_caixa = list(dadosCaixa['Caixa'])
 
     indice_fruta = lista_frutas.index(fruta)
-    qtd_existente = lista_quantidades[indice_fruta]
+    quantidade = lista_quantidades[indice_fruta]
+    precoFruta = lista_preco[indice_fruta]
+    caixa = lista_caixa[-1]
 
-    #Quantidade inválida
-    if (quantidade <= 0):
-        print("Quantidade digitada é inválida.")
-        return 2
+    if(codigoCaixa == 0):
+        caixa = caixa + (quantidade * precoFruta)
+    elif(codigoCaixa == 1):
+        caixa = caixa - (quantidade * precoFruta)
 
-    if(qtd_existente - quantidade < 0):
-        print("Não existe a quantidade suficiente em estoque.")
-        return 3
+    data_atual = datetime.now()
 
-    dados.loc[indice_fruta] = [fruta, qtd_existente - quantidade]
-    dados.to_csv("Estoque.csv", index=False)
+    dadosCaixa.loc[len(dadosCaixa)] = [caixa, usuario, data_atual]
+    dadosCaixa.to_csv("Caixa.csv", index=False)
 
     return 0

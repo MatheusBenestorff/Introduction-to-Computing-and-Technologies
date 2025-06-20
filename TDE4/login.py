@@ -1,7 +1,7 @@
 import pandas as pd
 
 def cadastro_usuario(usuario):
-    dados = pd.read_csv("Logins.csv")
+    dados = pd.read_csv("Usuarios.csv")
     lista_usuarios = list(dados["Usuario"])
 
     if usuario in lista_usuarios:
@@ -18,13 +18,15 @@ def cadastro_usuario(usuario):
 
     return 0
 
-def login(usuario, senha):
-    dados = pd.read_csv("Logins.csv")
+def login(usuario):
+    dados = pd.read_csv("Usuarios.csv")
     lista_usuarios = list(dados["Usuario"])
     lista_senhas = list(dados["Senha"])
 
-    if (usuario not in usuario):
+    if (usuario not in lista_usuarios):
         return 1
+    
+    senha = input("Digite a sua senha: ")
 
     indiceUsuario = lista_usuarios.index(usuario)
     senhaCorreta = lista_senhas[indiceUsuario]
@@ -32,6 +34,6 @@ def login(usuario, senha):
     if senha != senhaCorreta:
         return 2
 
-    return 0;
+    return 0
 
 
