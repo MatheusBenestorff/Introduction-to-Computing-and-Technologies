@@ -29,7 +29,7 @@ def login(usuario):
     senha = input("Digite a sua senha: ")
 
     indiceUsuario = lista_usuarios.index(usuario)
-    senhaCorreta = lista_senhas[indiceUsuario]
+    senhaCorreta = str(lista_senhas[indiceUsuario])
 
     if senha != senhaCorreta:
         return 2

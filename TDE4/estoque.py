@@ -5,33 +5,34 @@ def mostrar_estoque():
     dados = pd.read_csv("Estoque.csv")
     print(dados)
 
-    
 def venda_fruta(fruta, quantidade):
     dados = pd.read_csv("Estoque.csv")
 
     lista_frutas = list(dados['Fruta'])
     lista_quantidades = list(dados['Quantidade'])
+    lista_pVenda = list(dados['PVenda'])
+    lista_pCompra = list(dados['PCompra'])
 
 
     if (fruta not in lista_frutas):
-        print("Essa fruta não existe no estoque.")
         return 1
 
     indice_fruta = lista_frutas.index(fruta)
     qtd_existente = lista_quantidades[indice_fruta]
+    pVenda = lista_pVenda[indice_fruta]
+    pCompra = lista_pCompra[indice_fruta]
+
 
     #Quantidade inválida
-    if (quantidade <= 0):
-        print("Quantidade digitada é inválida.")
+    if (quantidade < 0):
         return 2
 
+    #Quantidade insuficiente
     if(qtd_existente - quantidade < 0):
-        print("Não existe a quantidade suficiente em estoque.")
         return 3
-    
-    codigoCaixa = 0
 
-    dados.loc[indice_fruta] = [fruta, qtd_existente - quantidade]
+    qtd_existente = qtd_existente - quantidade
+    dados.loc[indice_fruta] = [fruta, qtd_existente, pVenda, pCompra]
     dados.to_csv("Estoque.csv", index=False)
 
     return 0
@@ -41,6 +42,8 @@ def compra_fruta(fruta, quantidade):
 
     lista_frutas = list(dados["Fruta"])
     lista_quantidades = list(dados["Quantidade"])
+    lista_pVenda = list(dados['PVenda'])
+    lista_pCompra = list(dados['PCompra'])
 
     #Fruta não existe na tabela
     if (fruta not in lista_frutas):
@@ -48,15 +51,16 @@ def compra_fruta(fruta, quantidade):
 
     indice_fruta = lista_frutas.index(fruta)
     qtd_existente = lista_quantidades[indice_fruta]
+    pVenda = lista_pVenda[indice_fruta]
+    pCompra = lista_pCompra[indice_fruta]
 
-    codigoCaixa = 1
-
-    dados.loc[indice_fruta] = [fruta, qtd_existente + quantidade]
+    qtd_existente = qtd_existente + quantidade
+    dados.loc[indice_fruta] = [fruta, qtd_existente, pVenda, pCompra]
     dados.to_csv("Estoque.csv", index=False)
 
     return 0
 
-def cadastra_fruta(fruta, quantidade):
+def cadastra_fruta(fruta):
     dados = pd.read_csv("Estoque.csv")
 
     lista_frutas = list(dados['Fruta'])
@@ -65,13 +69,17 @@ def cadastra_fruta(fruta, quantidade):
         print("Essa fruta já esta cadastrada no estoque.")
         return 1
     
+    quantidade = input("Digite a quantidade: ")
+    pVenda = input("Digite o preço de Venda: ")
+    pCompra = input("Digite o preço de Compra: ")
+    
     #Quantidade inválida
     if (quantidade <= 0):
         print("Quantidade digitada é inválida.")
         return 2
     
     
-    dados.loc[len(dados)] = [fruta, quantidade]
+    dados.loc[len(dados)] = [fruta, quantidade, pVenda, pCompra]
     dados.to_csv("Estoque.csv", index=False)
 
     return 0
