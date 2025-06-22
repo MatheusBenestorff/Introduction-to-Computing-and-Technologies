@@ -3,8 +3,16 @@ import matplotlib.pyplot as plt
 
 #Função para exibir o estoque
 def mostrar_estoque():
-    dados = pd.read_csv("Estoque.csv")
-    print(dados)
+    dadosCaixa = pd.read_csv("Caixa.csv")
+    dadosEstoque = pd.read_csv("Estoque.csv")
+    lista_caixa = list(dadosCaixa['Caixa'])
+
+    #Último valor em caixa da tabela
+    caixa_atual = lista_caixa[-1]
+
+    print(dadosEstoque)
+    print("")
+    print(f"Saldo Atual: R$ {caixa_atual}")
 
 def venda_fruta(fruta, quantidade):
     dados = pd.read_csv("Estoque.csv")

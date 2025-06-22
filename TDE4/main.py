@@ -6,6 +6,7 @@ import os
 
 def main():
 
+    #Programa executa até que o usuário decida sair
     while True:
         print("<---------SISTEMA DE ESTOQUE--------->")
         print("1 = LOGIN")
@@ -42,7 +43,8 @@ def main():
                     print("(2) Compra de Fruta")
                     print("(3) Cadastro de nova Fruta")
                     print("(4) Gerar Gráfico dos itens em estoque")
-                    print("(5) Voltar ao menu principal")
+                    print("(5) Exibir Histórico de Caixa")
+                    print("(6) Voltar ao menu principal")
                     print("--------------------------------------\n")
 
                     codigo_operacao = int(input("Digite o código de operação: "))
@@ -118,14 +120,29 @@ def main():
                             estoque.gera_grafico()
                             os.system('cls')
                             break
+                    
                     elif(codigo_operacao == 5):
+                        while True:
+                            os.system('cls')
+                            print("<----------HISTÓRICO DE CAIXA--------->")
+                            caixa.mostrar_historico() 
+                            print("--------------------------------------")
+                            print("")
+                            voltar = int(input("Digite 1 para voltar: "))
+                            while voltar != 1:
+                                voltar = int(input("Digite 1 para voltar: "))
+                            if(voltar == 1):
+                                os.system('cls')
+                                break
+
+                    elif(codigo_operacao == 6):
                         os.system('cls')
                         print("Voltando ao menu.\n")
                         break
                     else:
                         print("Código de operação inválido.")
                         break
-                    
+
         elif(codigo_inicial == 2):
             usuario = input("Digite o nome de Usuario: ")
             codigo_cadastro = login.cadastro_usuario(usuario)
@@ -141,7 +158,9 @@ def main():
             print("Saindo do sistema.\n")
             sys.exit()
         else:
+            os.system('cls')
             print("Codigo inválido! Tente novamente.\n")
             continue
 
+os.system('cls')
 main()

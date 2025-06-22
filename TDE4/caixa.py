@@ -40,4 +40,10 @@ def formata_data():
     data_formatada = data.strftime("%d/%m/%Y")
     return data_formatada
 
+def mostrar_historico():
+    dadosCaixa = pd.read_csv("Caixa.csv")
+    print(dadosCaixa)
+
+
+
 
