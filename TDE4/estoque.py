@@ -1,6 +1,7 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
-
+#Função para exibir o estoque
 def mostrar_estoque():
     dados = pd.read_csv("Estoque.csv")
     print(dados)
@@ -13,7 +14,7 @@ def venda_fruta(fruta, quantidade):
     lista_pVenda = list(dados['PVenda'])
     lista_pCompra = list(dados['PCompra'])
 
-
+    #Fruta não existe
     if (fruta not in lista_frutas):
         return 1
 
@@ -22,9 +23,8 @@ def venda_fruta(fruta, quantidade):
     pVenda = lista_pVenda[indice_fruta]
     pCompra = lista_pCompra[indice_fruta]
 
-
     #Quantidade inválida
-    if (quantidade < 0):
+    if (quantidade <= 0):
         return 2
 
     #Quantidade insuficiente
@@ -48,6 +48,10 @@ def compra_fruta(fruta, quantidade):
     #Fruta não existe na tabela
     if (fruta not in lista_frutas):
         return 1
+    
+    #Quantidade inválida
+    if (quantidade <= 0):
+        return 2
 
     indice_fruta = lista_frutas.index(fruta)
     qtd_existente = lista_quantidades[indice_fruta]
@@ -62,22 +66,19 @@ def compra_fruta(fruta, quantidade):
 
 def cadastra_fruta(fruta):
     dados = pd.read_csv("Estoque.csv")
-
     lista_frutas = list(dados['Fruta'])
 
+    #Fruta já existe
     if (fruta in lista_frutas):
-        print("Essa fruta já esta cadastrada no estoque.")
         return 1
     
-    quantidade = input("Digite a quantidade: ")
+    quantidade = int(input("Digite a quantidade: "))
     pVenda = input("Digite o preço de Venda: ")
     pCompra = input("Digite o preço de Compra: ")
     
     #Quantidade inválida
-    if (quantidade <= 0):
-        print("Quantidade digitada é inválida.")
+    if (quantidade < 0):
         return 2
-    
     
     dados.loc[len(dados)] = [fruta, quantidade, pVenda, pCompra]
     dados.to_csv("Estoque.csv", index=False)
@@ -85,5 +86,18 @@ def cadastra_fruta(fruta):
     return 0
 
 
-def gera_grafico(fruta, quantidade):
-    pass
+def gera_grafico():
+
+    dados = pd.read_csv("Estoque.csv")
+
+    lista_frutas = list(dados["Fruta"])
+    lista_quantidades = list(dados["Quantidade"])
+
+    frutas = lista_frutas
+    quantidades = lista_quantidades
+
+    total = sum(quantidades)
+
+    plt.pie(quantidades, labels=frutas, autopct=lambda p: '{:.0f}'.format(p * total /100), shadow=True, startangle=90)
+    plt.axis('equal')
+    plt.show()

@@ -68,7 +68,8 @@ def main():
                             else:
                                 os.system('cls')
                                 print("Venda realizada com sucesso.")
-                                caixa.aumenta_caixa(fruta, quantidade, usuario) 
+                                codigo_caixa = 1
+                                caixa.atualiza_caixa(fruta, quantidade, usuario, codigo_caixa) 
                                 print("Caixa atualizado.\n")
                                 break
 
@@ -82,20 +83,41 @@ def main():
                                 os.system('cls')
                                 print("Essa fruta não existe no estoque.")
                                 break
+                            elif(codigo_compra == 2):
+                                os.system('cls')
+                                print("Quantidade digitada é inválida.")
+                                break
                             else:
                                 os.system('cls')
                                 print("Compra realizada com sucesso.")
-                                caixa.diminui_caixa(fruta, quantidade, usuario) 
+                                codigo_caixa = 2
+                                caixa.atualiza_caixa(fruta, quantidade, usuario, codigo_caixa) 
                                 print("Caixa atualizado.\n")
                                 break
 
                     elif(codigo_operacao == 3):
-                        fruta = input("Digite a fruta que deseja cadastrar: ")    
-                        quantidade = int(input("Digite a quantidade que deseja cadastrar: "))
-                        codigo_cadastro = estoque.cadastra_fruta(fruta, quantidade)
+                        while True:
+                            fruta = input("Digite a fruta que deseja cadastrar: ")    
+                            codigo_cadastro = estoque.cadastra_fruta(fruta)
+
+                            if(codigo_cadastro == 1):
+                                os.system('cls')
+                                print("Essa fruta já esta cadastrada no estoque.")
+                                break    
+                            elif(codigo_cadastro == 2):
+                                os.system('cls')
+                                print("Quantidade digitada é inválida.")
+                                break   
+                            else:
+                                os.system('cls')
+                                print(f"Fruta {fruta} cadastrada com sucesso.")
+                                break
 
                     elif(codigo_operacao == 4):
-                        pass
+                        while True:
+                            estoque.gera_grafico()
+                            os.system('cls')
+                            break
                     elif(codigo_operacao == 5):
                         os.system('cls')
                         print("Voltando ao menu.\n")
@@ -103,6 +125,7 @@ def main():
                     else:
                         print("Código de operação inválido.")
                         break
+                    
         elif(codigo_inicial == 2):
             usuario = input("Digite o nome de Usuario: ")
             codigo_cadastro = login.cadastro_usuario(usuario)
